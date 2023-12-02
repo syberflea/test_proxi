@@ -1,6 +1,6 @@
 from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
-from .views import OwnerViewSet, ClientViewSet, ClientAPIView
+from .views import OwnerViewSet, ClientViewSet, ClientAPIView, CreateClientViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -13,6 +13,7 @@ router = DefaultRouter()
 
 router.register('owner', OwnerViewSet)
 router.register('client', ClientViewSet)
+router.register('create_client', CreateClientViewSet, basename = 'create_client')
 
 
 urlpatterns = [
