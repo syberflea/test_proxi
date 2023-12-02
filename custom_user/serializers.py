@@ -9,6 +9,10 @@ class OwnerSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        # write_only=True
+    )
+
     class Meta:
         model = Client
-        fields = '__all__'
+        fields = ['password', 'email']
