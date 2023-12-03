@@ -28,3 +28,21 @@ class ClientSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.save(update_fields=['password'])
         return user
+
+
+class UpdateClientSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для обновления объекта клиента.
+    """
+    password = serializers.CharField(required=False)
+    email = serializers.EmailField(required=False)
+
+    class Meta:
+        model = Client
+        fields = ['password', 'email']
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        if password:
+            instance.set_password(password)
+        return super().update(instance, validated_data)
