@@ -66,30 +66,7 @@ class RetrieveClientViewSet(
     permission_classes = [AllowAny]
     # TODO подключить кастомную авторизацию по JWT
     # authentication_classes = [TokenAuthentication]
-
-
-# class UpdateClientViewSet(
-#     mixins.UpdateModelMixin, viewsets.GenericViewSet
-# ):
-#     """
-#     Обновление объекта клиента.
-#     """
-#     queryset = Client.objects.all()
-#     serializer_class = UpdateClientSerializer
-#     permission_classes = [AllowAny]
-
-#     def update(self, request, *args, **kwargs):
-#         partial = kwargs.pop('partial', False)
-#         instance = self.get_object()
-#         serializer = self.get_serializer(instance, data=request.data, partial=partial)
-
-#         if serializer.is_valid():
-#             self.perform_update(serializer)
-#             if getattr(instance, '_prefetched_objects_cache', None):
-#                 instance._prefetched_objects_cache = {}
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class UpdateClientViewSet(
     mixins.UpdateModelMixin, viewsets.GenericViewSet
@@ -107,7 +84,7 @@ class UpdateClientViewSet(
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        serializer = self.get_serializer(instance, data=request.data, partial=False)  # это лишнее?
         return self.partial_update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
