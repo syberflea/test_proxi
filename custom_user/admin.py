@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import UserAccount, Owner, Client
+
+from .models import Client, Owner, UserAccount
 
 admin.site.register(UserAccount)
 admin.site.register(Owner)

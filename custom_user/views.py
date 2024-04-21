@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .models import Owner, Client
-from .serializers import OwnerSerializer, ClientSerializer
+from .models import Client, Owner
+from .serializers import ClientSerializer, OwnerSerializer
 
 
 class OwnerViewSet(viewsets.ModelViewSet):

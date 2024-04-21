@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer,
-    TokenRefreshSerializer
+    TokenRefreshSerializer,
 )
 from typing import Any, Dict, Optional, Type, TypeVar
 from django.contrib.auth.models import AbstractBaseUser, update_last_login
@@ -16,7 +16,7 @@ from rest_framework.exceptions import AuthenticationFailed
 #         data = super().validate(attrs)
 #         # Дополнительная логика, если нужно
 #         return data
-    
+
 
 class ClientTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -26,7 +26,7 @@ class ClientTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Ваша логика для обработки клиентского пользователя
         # Например, проверка, является ли пользователь клиентом (тип - CLIENT)
         if user.type != UserAccount.Types.CLIENT:
-            raise AuthenticationFailed('Authentication failed. Not a client.')
+            raise AuthenticationFailed("Authentication failed. Not a client.")
 
         return data
 

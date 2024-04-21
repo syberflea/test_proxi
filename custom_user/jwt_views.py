@@ -1,12 +1,13 @@
 # from django.contrib.auth import get_user_model
-from rest_framework.response import Response
-from rest_framework import exceptions
-from rest_framework.permissions import AllowAny
-from rest_framework.decorators import api_view, permission_classes
 from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework import exceptions
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+from .models import Client
 from .serializers import ClientSerializer
 from .utils import generate_access_token, generate_refresh_token
-from .models import Client
 
 
 @api_view(['POST'])
