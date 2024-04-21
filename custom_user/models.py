@@ -1,3 +1,4 @@
+from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
@@ -18,7 +19,9 @@ class UserAccountManager(BaseUserManager):
 
     def create_superuser(self, email, password):
         user = self.create_user(
-            email=self.normalize_email(email), password=password)
+            email=self.normalize_email(email),
+            password=password
+        )
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
@@ -31,12 +34,8 @@ class UserAccount(AbstractBaseUser):
         CLIENT = "CLIENT", "client"
         OWNER = "OWNER", "owner"
 
-    type = models.CharField(
-        max_length=8,
-        choices=Types.choices,
-        # Default is user is teacher
-        default=Types.OWNER,
-    )
+    type = models.CharField(max_length=8, choices=Types.choices,
+                            default=Types.CLIENT)
     email = models.EmailField(max_length=200, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -44,7 +43,7 @@ class UserAccount(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     # special permission which define that
-    # the new user is teacher or student
+    # the new user is_client or is_owner
     is_client = models.BooleanField(default=False)
     is_owner = models.BooleanField(default=False)
 
@@ -64,7 +63,7 @@ class UserAccount(AbstractBaseUser):
 
     def save(self, *args, **kwargs):
         if not self.type or self.type is None:
-            self.type = UserAccount.Types.TEACHER
+            self.type = UserAccount.Types.CLIENT
         return super().save(*args, **kwargs)
 
 
@@ -75,12 +74,14 @@ class ClientManager(models.Manager):
         if not password:
             raise ValueError("Password is must !")
         email = email.lower()
-        user = self.model(email=email)
+        user = self.model(
+            email=email
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self, *args,  **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
         queryset = queryset.filter(type=UserAccount.Types.CLIENT)
         return queryset
@@ -105,7 +106,9 @@ class OwnerManager(models.Manager):
         if not password:
             raise ValueError("Password is must !")
         email = email.lower()
-        user = self.model(email=email)
+        user = self.model(
+            email=email
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -119,7 +122,6 @@ class OwnerManager(models.Manager):
 class Owner(UserAccount):
     class Meta:
         proxy = True
-
     objects = OwnerManager()
 
     def save(self, *args, **kwargs):
